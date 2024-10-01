@@ -1,8 +1,10 @@
 <?php 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
+
 require 'core/config.php';
 require 'core/Controller.php';
+
 $JSON = file_get_contents('php://input');
 $DATA = json_decode($JSON, true);
 $METHOD = $_SERVER['REQUEST_METHOD'];
