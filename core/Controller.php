@@ -1,5 +1,5 @@
 <?php 
-header("Access-Control-Allow-Origin: *");
+
 
 function __LOGIN($DATA, $conn) {
    
@@ -12,12 +12,29 @@ function __LOGIN($DATA, $conn) {
     $USER = $STMT->fetch(PDO::FETCH_ASSOC);
     if ($USER) {
         if (password_verify($PASSWORD, $USER['password'])) {
-            print(json_encode(['status' => 'OK', 'message' => 'LOGGED IN']));
+            
+            $response = [
+                'status' => 'OK',
+                'message' => 'เข้าสู่ระบบสำเร็จ',
+                'token' => '1234567890',
+                'expire' => time() + 3600,
+                'user' => $USER
+            ];
+            echo json_encode($response);
+
         } else {
-            print(json_encode(['status' => 'ERROR', 'message' => 'WRONG PASSWORD']));
+            $response = [
+                'status' => 'ERROR',
+                'message' => 'เกิดข้อผิดพลาด กรุณาลองใหม่'
+            ];
+            echo json_encode($response);
         }
     } else {
-            print(json_encode(['status' => 'ERROR', 'message' => 'USER NOT FOUND']));
+            $response = [
+                'status' => 'ERROR',
+                'message' => 'ไม่พบข้อมูลผู้ใช้งาน'
+            ];
+            echo json_encode($response);
     }
     
 }
@@ -33,12 +50,18 @@ function __REGISTER($DATA, $conn) {
     $STMT->bindParam(':password', $PASSWORD_HASH);
     $result = $STMT->execute();
     if ($result) {
-        // print("REGISTERED");
         print(json_encode(['status' => 'OK', 'message' => 'REGISTERED']));
     } else {
-        // print("ERROR");
         print(json_encode(['status' => 'ERROR', 'message' => 'ERROR']));
     }
 }
+
+function __GET_PRODUCT_BY_ID($id, $conn) {
+    print(json_encode(['status' => 'OK', 'message' => "GET_PRODUCT_BY_ID $id"]));
+}
+
+function __GET_ALL_PRODUCTS($conn) {
+
+}   
 
 ?>
